@@ -8,7 +8,7 @@ def frame_gen(target_pos,cam_pos,rot_axis,texture,res=256):
     cam_dir = (sat - cam) / np.linalg.norm(sat - cam)
     cam_x = rot_axis / np.linalg.norm(rot_axis)
 
-    cam_up = -np.linalg.cross(cam_dir, cam_x)
+    cam_up = np.linalg.cross(cam_dir, cam_x)
     cam_y = cam_up / np.linalg.norm(cam_up)
 
     #
@@ -51,8 +51,8 @@ def frame_gen(target_pos,cam_pos,rot_axis,texture,res=256):
         norm_hits = hit_pts / rad
         norm_hits = np.clip(norm_hits, -1.0, 1.0)
 
-        phi = np.asin(norm_hits[:, 1])
-        theta = np.atan2(norm_hits[:, 2], norm_hits[:, 0])
+        phi = np.asin(norm_hits[:, 2])
+        theta = np.atan2(norm_hits[:, 1], norm_hits[:, 0])
 
         # Map angles mathematically to a [0.0, 1.0] image grid range
         u = (theta + math.pi) / (2.0 * math.pi)

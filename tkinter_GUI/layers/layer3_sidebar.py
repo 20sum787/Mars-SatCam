@@ -14,6 +14,8 @@ class SideFrame(tk.Frame):
                                      fg = "#023047",bg="#CBC8C5")
         sidelabel.grid(column=0, row=0, sticky='NWE')
 
+        self.slider = tk.Scale(self,fg = "#023047",bg="#CBC8C5",orient= 'horizontal',from_ = 1,to = 200)
+        self.slider.grid(column=0,row=1,sticky='NSWE')
         #self.setup = SetupFrame(self,**kwargs)
         #self.setup.grid(column=0,row=1,sticky='NSWE')
 
@@ -24,6 +26,7 @@ class SideFrame(tk.Frame):
         #self.figurecontrol.grid(column=0,row=2,sticky='NSWE')
 
         self.rowconfigure(0, weight=1)
+        self.rowconfigure(0,weight=0)
         #self.rowconfigure(1,weight=0)
         #self.rowconfigure(2,weight=0)
         #self.rowconfigure(3,weight=0)

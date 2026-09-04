@@ -13,8 +13,8 @@ def gnd_update(target_pos,equirect,past_frame=None):
         sat = np.ndarray.astype(target_pos, dtype=np.float32)
         surface_pt = sat / np.linalg.norm(sat)
 
-        phi = np.asin(surface_pt[1])
-        theta = np.atan2(surface_pt[2], surface_pt[0])
+        phi = np.asin(surface_pt[2])
+        theta = np.atan2(surface_pt[1], surface_pt[0])
 
         # Map angles mathematically to a [0.0, 1.0] image grid range
         u = (theta + math.pi) / (2.0 * math.pi)
@@ -37,8 +37,8 @@ def gnd_update(target_pos,equirect,past_frame=None):
         sat = np.ndarray.astype(target_pos,dtype=np.float32)
         surface_pt = sat/np.linalg.norm(sat)
 
-        phi = np.asin(surface_pt[1])
-        theta = np.atan2(surface_pt[2], surface_pt[0])
+        phi = np.asin(surface_pt[2])
+        theta = np.atan2(surface_pt[1], surface_pt[0])
 
         # Map angles mathematically to a [0.0, 1.0] image grid range
         u = (theta + math.pi) / (2.0 * math.pi)

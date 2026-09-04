@@ -21,15 +21,16 @@ height, width = 512, 512
 print("Running Demo... Press 'q' in the graphics window to exit.")
 # initial position 610km above north pole
 init_pos = np.array([0,0,4e6])
-init_vel = np.array([2400,2500,0]) # in m/s
+init_vel = np.array([3500,0,0]) # in m/s
 frame_id = 0
 old_gnd = None
 sat0 = SatObj(name='MAVEN',colour=np.array([0.0,1.0,0.0]),pos=init_pos,vel=init_vel)
 def live_frame():
     global frame_id, old_gnd
     # for sat in sat list, update all positions!
+    speed_scale = app.contents.bodyframe.sidebar.slider.get()
 
-    sat_update(sat0)
+    sat_update(sat0,dt=0.1*speed_scale)
 
     sat_pos = sat0.pos
     print("Altitude (km): ",(np.linalg.norm(sat_pos)-3390000)/1000)
@@ -41,7 +42,7 @@ def live_frame():
 
     camera_pos = sat_pos - sat_vel + sat_pos*0.0005
 
-    rotation_axis = -np.linalg.cross(norm_vel,sat_pos)
+    rotation_axis = np.linalg.cross(norm_vel,sat_pos)
 
     frame = frame_gen(sat_pos,camera_pos,rotation_axis,res = resolution,
                       texture = mars_texture_0)
@@ -82,7 +83,7 @@ def update_frame():
     app.contents.bodyframe.cam.label.configure(image=tk_image)
     app.contents.bodyframe.telemetry.gnd.configure(image=tk_gnd_img)
 
-    app.after(60, update_frame)
+    app.after(50, update_frame)
 
 
 
