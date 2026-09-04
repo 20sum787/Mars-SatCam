@@ -8,7 +8,7 @@ def frame_gen(target_pos,cam_pos,rot_axis,texture,res=256):
     cam_dir = (sat - cam) / np.linalg.norm(sat - cam)
     cam_x = rot_axis / np.linalg.norm(rot_axis)
 
-    cam_up = np.linalg.cross(cam_dir, cam_x)
+    cam_up = -np.linalg.cross(cam_dir, cam_x)
     cam_y = cam_up / np.linalg.norm(cam_up)
 
     #

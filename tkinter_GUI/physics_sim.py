@@ -5,7 +5,7 @@ import numpy as np
 G = 6.67e-11
 M = 6.42e23
 
-def sat_update(sat_obj,dt=5):
+def sat_update(sat_obj,dt=10):
     pos_mag = np.linalg.norm(sat_obj.pos)
     unit_pos = sat_obj.pos / pos_mag
     accel = (-G * M / (pos_mag ** 2)) * unit_pos
