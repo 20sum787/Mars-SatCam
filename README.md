@@ -1,4 +1,5 @@
-This repository contains my code for a python simulation of a mars orbiter.
+This repository contains my code for a python simulation of a mars orbiter. The code was written with limited assistance from Gemini (mostly for the raytracing and texture
+mapping).
 
 It utilises many of the concepts that I practiced during my internship at DZP i.e. live, low-latency tkinter GUIs, a special addition of mine (i.e the live, writeable
 mock console log, useful for error flagging). Additionally, it introduced me to pinhole raytracing for basic graphics, refreshed a lot of my vector and matrix maths, 
