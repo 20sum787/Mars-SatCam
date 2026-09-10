@@ -12,8 +12,6 @@ from gnd_track import gnd_update
 im_path = "mars.jpg"
 pil_image = Image.open(im_path)
 mars_texture_0 = np.asarray(pil_image) / 255.0
-# TODO implement gnd track
-
 
 resolution = 512
 height, width = 512, 512
@@ -48,7 +46,6 @@ def live_frame():
         alt_tag = "confirm"
     app.write_to_console(text=f'Altitude: {alt:.2f} km',tag=alt_tag)
 
-    #print("Altitude (km): ",(np.linalg.norm(sat_pos)-3390000)/1000)
     if np.linalg.norm(sat_pos) <= 3500*1000:
         app.write_to_console(text="Atmopshere collision",tag="error")
         return False
