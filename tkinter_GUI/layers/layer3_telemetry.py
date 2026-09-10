@@ -12,7 +12,7 @@ class TelemetryFrame(tk.Frame):
         self.label.grid(column=0,row=0,sticky='NWE')
 
         self.gnd = tk.Label(self)
-        self.gnd.grid(column=0,row=1,sticky='NWE')
+        self.gnd.grid(column=0,row=2,sticky='NWE')
 
 
         self.rowconfigure(0,weight=1)

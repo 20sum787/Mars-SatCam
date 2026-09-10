@@ -22,6 +22,7 @@ class Application(tk.Tk):
         self.contents.grid(column=0, row=0, sticky='NWES')
 
     def write_to_console(self,text:str,tag:str='normal'):
+        # tag system - "error" red, "confirm" green, "normal" white
         self.contents.bodyframe.console.consolewindow.insert(tk.INSERT,f"{text}\n",tag)
         self.contents.bodyframe.console.consolewindow.see(tk.END)
     '''

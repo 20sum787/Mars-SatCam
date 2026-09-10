@@ -9,7 +9,7 @@ from physics_sim import sat_update
 from satobj import SatObj
 from gnd_track import gnd_update
 
-im_path = r"C:\Users\shrey\OneDrive\Desktop\earth.jpg"
+im_path = "mars.jpg"
 pil_image = Image.open(im_path)
 mars_texture_0 = np.asarray(pil_image) / 255.0
 # TODO implement gnd track
@@ -20,22 +20,37 @@ height, width = 512, 512
 
 print("Running Demo... Press 'q' in the graphics window to exit.")
 # initial position 610km above north pole
-init_pos = np.array([0,0,4e6])
-init_vel = np.array([3500,0,0]) # in m/s
-frame_id = 0
+init_pos = np.array([0,4.49e6,0])
+# should be perpendicular!
+init_vel = np.array([2000,0,2090]) # in m/s
+global_time = 0
 old_gnd = None
 sat0 = SatObj(name='MAVEN',colour=np.array([0.0,1.0,0.0]),pos=init_pos,vel=init_vel)
+
 def live_frame():
-    global frame_id, old_gnd
+    global global_time, old_gnd
     # for sat in sat list, update all positions!
     speed_scale = app.contents.bodyframe.sidebar.slider.get()
 
-    sat_update(sat0,dt=0.1*speed_scale)
+    dt_new = 0.05*speed_scale
+
+    sat_update(sat0,dt=dt_new)
 
     sat_pos = sat0.pos
-    print("Altitude (km): ",(np.linalg.norm(sat_pos)-3390000)/1000)
+    alt = (np.linalg.norm(sat_pos)-3390000)/1000
+    # trivial example to demonstrate different colours
+    # in reality, I'll use this for data gaps, etc, to indicate errors
+    if alt < 150:
+        alt_tag = "error"
+    elif alt > 1000:
+        alt_tag = "normal"
+    else:
+        alt_tag = "confirm"
+    app.write_to_console(text=f'Altitude: {alt:.2f} km',tag=alt_tag)
+
+    #print("Altitude (km): ",(np.linalg.norm(sat_pos)-3390000)/1000)
     if np.linalg.norm(sat_pos) <= 3500*1000:
-        print("Atmosphere collision")
+        app.write_to_console(text="Atmopshere collision",tag="error")
         return False
     sat_vel = sat0.vel
     norm_vel = sat_vel / np.linalg.norm(sat_vel)
@@ -45,22 +60,22 @@ def live_frame():
     rotation_axis = np.linalg.cross(norm_vel,sat_pos)
 
     frame = frame_gen(sat_pos,camera_pos,rotation_axis,res = resolution,
-                      texture = mars_texture_0)
+                      texture = mars_texture_0,timestamp=global_time)
 
     # convert back to standard 255
     frame = (frame * 255).astype(np.uint8)
 
     if old_gnd is None:
 
-        gnd = gnd_update(sat_pos,pil_image)
+        gnd = gnd_update(sat_pos,pil_image,timestamp = global_time)
     else:
-        gnd = gnd_update(sat_pos,pil_image,old_gnd)
+        gnd = gnd_update(sat_pos,pil_image,past_frame = old_gnd,timestamp = global_time)
 
     old_gnd = gnd
 
     gnd = (gnd * 255).astype(np.uint8)
 
-    frame_id += 1
+    global_time += dt_new
 
     return frame,gnd
 

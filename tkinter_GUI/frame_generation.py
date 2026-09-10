@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-def frame_gen(target_pos,cam_pos,rot_axis,texture,res=256):
+def frame_gen(target_pos,cam_pos,rot_axis,texture,timestamp,res=256):
     sat = np.ndarray.astype(target_pos,dtype=np.float32)
     cam = np.ndarray.astype(cam_pos, dtype=np.float32)
 
@@ -30,6 +30,7 @@ def frame_gen(target_pos,cam_pos,rot_axis,texture,res=256):
     # checking for intersection
 
     rad = 3390*1000
+    rotation_rate = 7.09e-5
     b = 2 * np.sum(ray_dirs * cam, axis=-1)
     c = np.sum(cam * cam) - rad ** 2
 
@@ -56,6 +57,8 @@ def frame_gen(target_pos,cam_pos,rot_axis,texture,res=256):
 
         # Map angles mathematically to a [0.0, 1.0] image grid range
         u = (theta + math.pi) / (2.0 * math.pi)
+        u += rotation_rate*timestamp
+        u = u % 1.0
         v = (phi + (math.pi / 2.0)) / math.pi
         # Invert v so north pole is at the top of the texture file
         v = 1.0 - v
